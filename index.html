@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Parwad Village — Belagavi</title>
+  <meta name="description" content="Parwad Village — waterfalls, temples, festivals, and local life in Belagavi district." />
+  <style>
+    /* =========================
+       Parwad Village — Single File
+       (Responsive + Lightbox + Smooth Scroll + Back-to-Top)
+       ========================= */
+
+    :root{
+      --bg: #fbfdfb;
+      --surface: #ffffff;
+      --muted: #6b7280;
+      --accent: #2f855a; /* green */
+      --accent-2: #2a6f9e;
+      --radius: 12px;
+      --max-width: 1100px;
+      --shadow: 0 8px 30px rgba(16,24,40,0.06);
+      --glass: rgba(255,255,255,0.85);
+    }
+
+    *{box-sizing:border-box}
+    html { scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#f8faf8 0%, #f3f6f3 100%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+    }
+
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 1rem;}
+
+    /* ===== Header ===== */
+    header{
+      position:sticky; top:0; z-index:1200;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #eef2f4;
+    }
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.8rem 1rem;max-width:var(--max-width);margin:0 auto}
+    .brand{font-weight:700;color:var(--accent);font-size:1.15rem;text-decoration:none}
+    nav ul{display:flex;gap:1rem;list-style:none;margin:0;padding:0;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;padding:0.45rem 0.6rem;border-radius:8px}
+    nav a:hover{color:var(--accent-2);background:rgba(42,111,158,0.04)}
+
+    /* Hamburger for mobile */
+    .menu-btn{display:none;background:none;border:0;cursor:pointer;padding:6px}
+    .menu-btn .bar{display:block;width:22px;height:2.5px;background:var(--accent);margin:4px 0;border-radius:2px;transition:transform .18s}
+
+    /* ===== Hero ===== */
+    .hero{min-height:56vh;display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:1rem}
+    .hero .bg{position:absolute;inset:0;background-image:url('/waterfall.png');background-size:cover;background-position:center;filter:contrast(1.02) brightness(0.6);z-index:0}
+    .hero .content{position:relative;z-index:2;text-align:center;color:white;padding:2rem;max-width:960px}
+    .hero h1{font-family: "Merriweather", serif;font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 .6rem}
+    .lead{font-weight:500;opacity:0.95;margin-bottom:1rem}
+    .cta{display:inline-block;background:var(--accent);color:#fff;padding:.65rem 1rem;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 8px 20px rgba(47,133,90,0.14)}
+    .cta:hover{transform:translateY(-3px);transition:transform .18s}
+
+    /* ===== Sections ===== */
+    section{padding:2.25rem 0}
+    section .container{padding:0 1rem}
+    h2{color:var(--accent);margin:0 0 .75rem;font-size:1.45rem;text-align:center}
+    p.lead-muted{color:var(--muted);text-align:center;margin-bottom:1rem}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:1fr;gap:1rem;align-items:center}
+    .about-text p{color:var(--muted)}
+    .about-img img{width:100%;height:280px;object-fit:cover;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    /* Culture cards */
+    .cards{display:grid;grid-template-columns:1fr;gap:1rem}
+    .card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+    .card img{width:100%;height:200px;object-fit:cover;display:block}
+    .card .card-body{padding:0.9rem}
+    .card h3{margin:0 0 .5rem}
+    .card p{color:var(--muted);margin:0}
+
+    /* Gallery */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:12px;
+      align-items:stretch;
+      margin-top:0.75rem;
+    }
+    .gallery-item{position:relative;overflow:hidden;border-radius:10px;cursor:pointer}
+    .gallery-item img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .28s,filter .28s}
+    .gallery-item:hover img{transform:scale(1.05);filter:brightness(0.95)}
+    .gallery-caption{position:absolute;left:10px;bottom:10px;color:#fff;font-weight:700;text-shadow:0 3px 10px rgba(0,0,0,0.45);font-size:.95rem}
+
+    /* Lightbox (overlay) */
+    .lightbox{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(4,8,7,0.65);z-index:2000;padding:20px;
+    }
+    .lightbox.open{display:flex}
+    .lightbox-inner{max-width:1100px;width:100%;max-height:90vh;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .lightbox img{max-width:100%;max-height:80vh;border-radius:8px;box-shadow:0 18px 50px rgba(2,6,23,0.6)}
+    .lightbox .caption{color:#fff;font-weight:600;font-size:1rem;text-align:center}
+    .lightbox .controls{display:flex;gap:10px;align-items:center}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.18);color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+    /* Map */
+    .map-wrap{display:flex;justify-content:center;margin-top:10px}
+    .map-iframe{width:100%;max-width:900px;height:420px;border:0;border-radius:10px;box-shadow:var(--shadow)}
+
+    /* Contact */
+    .contact-form{max-width:560px;margin:0 auto;display:grid;gap:.6rem}
+    input,textarea,button{width:100%;padding:.7rem;border-radius:10px;border:1px solid #e6e9ee;font-size:1rem}
+    textarea{min-height:120px;resize:vertical}
+    button[type="submit"]{background:var(--accent);color:#fff;border:none;font-weight:700;cursor:pointer}
+    button[type="submit"]:hover{background:var(--accent-2)}
+
+    /* Footer */
+    footer{padding:1.2rem 0;text-align:center;color:var(--muted);font-size:.95rem}
+
+    /* Back to top button */
+    .backtop{
+      position:fixed;right:18px;bottom:18px;width:48px;height:48px;border-radius:50%;background:var(--accent);display:grid;place-items:center;color:#fff;box-shadow:0 8px 24px rgba(47,133,90,0.2);cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .28s,transform .28s;z-index:1400
+    }
+    .backtop.show{opacity:1;transform:translateY(0)}
+    .backtop svg{width:20px;height:20px}
+
+    /* Responsive layout adjustments */
+    @media(min-width:720px){
+      .about-grid{grid-template-columns:1fr 440px;gap:1.25rem}
+      .cards{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(max-width:719px){
+      nav ul{display:none}
+      .menu-btn{display:inline-flex}
+      .hero{padding:72px 18px}
+      .gallery-grid img{height:140px}
+    }
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-wrap container">
+      <a class="brand" href="#home">Parwad</a>
+
+      <nav aria-label="Main navigation">
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuList" aria-label="Toggle menu">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+
+        <ul id="menuList" role="menu">
+          <li role="none"><a role="menuitem" href="#home">Home</a></li>
+          <li role="none"><a role="menuitem" href="#about">About</a></li>
+          <li role="none"><a role="menuitem" href="#culture">Culture</a></li>
+          <li role="none"><a role="menuitem" href="#gallery">Gallery</a></li>
+          <li role="none"><a role="menuitem" href="#map">Map</a></li>
+          <li role="none"><a role="menuitem" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="container content">
+      <h1>Parwad — Nature & Culture of Belagavi</h1>
+      <p class="lead">Explore waterfalls, temples, festivals, and everyday village life in Parwad.</p>
+      <div style="text-align:center;margin-top:12px">
+        <a class="cta" href="#about">Start Exploring</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <h2>About Parwad</h2>
+      <p class="lead-muted center">A scenic village in Belagavi district known for its seasonal waterfall, warm community, and local festivals.</p>
+
+      <div class="about-grid" style="margin-top:1rem">
+        <div class="about-text">
+          <p>Parwad is a small village celebrated for its natural beauty and cultural traditions. Locals host vibrant festivals, maintain historic temples, and the surrounding landscape becomes lush and photogenic especially after the monsoon.</p>
+          <ul style="margin-top:0.75rem;color:var(--muted);list-style:disc;padding-left:1.25rem">
+            <li><strong>Highlights:</strong> Waterfall, Temple, Local festivals</li>
+            <li><strong>Best time to visit:</strong> Post-monsoon (when waterfall is at its fullest)</li>
+          </ul>
+        </div>
+        <div class="about-img" aria-hidden="true">
+          <!-- Replace this with your real Parwad hero image if you have one -->
+          <img src="/waterfall.png">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CULTURE -->
+  <section id="culture">
+    <div class="container">
+      <h2>Culture & Attractions</h2>
+      <p class="lead-muted center">Parwad’s community life includes festivals, temple fairs, and traditions handed down through generations.</p>
+
+      <div class="cards" style="margin-top:1rem">
+        <article class="card">
+          <img src="/waterfall.png" alt="Parwad waterfall">
+          <div class="card-body">
+            <h3>Waterfall</h3>
+            <p class="muted">A scenic waterfall close to the village — beautiful for day trips and photos during/after monsoon.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="/temple.png" alt="Parwad temple">
+          <div class="card-body">
+            <h3>Temple</h3>
+            <p class="muted">Local temple with traditional architecture; the center of many community events and rituals.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="/fastival.png" alt="Parwad festival">
+          <div class="card-body">
+            <h3>Festivals</h3>
+            <p class="muted">Colorful festivals, folk music, and local cuisine connect residents and visitors alike.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <h2>Photo Gallery — Parwad Village</h2>
+      <p class="lead-muted center">Click any photo to enlarge (lightbox).</p>
+
+      <div class="gallery-grid" style="margin-top:1rem">
+        <!-- Each item: data-caption describes the image in lightbox -->
+        <div class="gallery-item" tabindex="0" data-src="/waterfall.png" data-caption="Parwad waterfall — post-monsoon view">
+          <img src="/waterfall.png" alt="Parwad waterfall (thumbnail)">
+          <div class="gallery-caption">Parwad Waterfall</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" data-src="/temple.png" data-caption="Local temple of Parwad">
+          <img src="/temple.png" alt="Parwad temple thumbnail">
+          <div class="gallery-caption">Parwad Temple</div>
+        </div>
+
+        <div class="gallery-item" tabindex="0" data-src="/festival.png" data-caption="Festival celebration in Parwad">
+          <img src="/fastival.png" alt="Parwad festival">
+          <div class="gallery-caption">Festival</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX OVERLAY -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" src="" alt="">
+      <div class="caption" id="lightboxCaption"></div>
+      <div class="controls" style="display:flex;gap:8px">
+        <button class="btn-ghost" id="prevBtn" aria-label="Previous image">Prev</button>
+        <button class="btn-ghost" id="nextBtn" aria-label="Next image">Next</button>
+        <button class="btn-ghost" id="closeBtn" aria-label="Close preview">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <section id="map">
+    <div class="container">
+      <h2>Find Parwad on the Map</h2>
+      <p class="lead-muted center">Map centered on Parwad, Belagavi district (Karnataka, India).</p>
+      <div class="map-wrap" style="margin-top:1rem">
+        <!-- Google maps embed (simple query-based embed) -->
+        <iframe class="map-iframe"
+          src="https://www.google.com/maps?q=Parwad,+Belagavi,+Karnataka,+India&output=embed"
+          aria-label="Map showing Parwad Village"
+          loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <h2>Contact & Feedback</h2>
+      <p class="lead-muted center">Have questions or suggestions? Send a message — this form is HTML-only; connect to backend/Wix to store submissions.</p>
+
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('This form is HTML-only in this demo. Connect to backend to save messages.');">
+        <input name="name" type="text" placeholder="Your name" required>
+        <input name="email" type="email" placeholder="you@example.com" required>
+        <input name="phone" type="text" placeholder="Phone (optional)">
+        <textarea name="message" placeholder="Your message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container center">
+      © 2025 Parwad Village — Built with Mor
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="backtop" id="backtop" aria-label="Back to top" title="Back to top" aria-hidden="true">
+    <!-- up arrow -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V6"></path>
+      <path d="M5 12l7-7 7 7"></path>
+    </svg>
+  </button>
+
+  <script>
+    /* ===========================
+       JS: menu toggle, back-to-top,
+       gallery lightbox (with prev/next), smooth behavior
+       =========================== */
+
+    // Menu toggle (mobile)
+    (function(){
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('menuList');
+      if(btn && menu){
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          if(menu.style.display === 'flex') {
+            menu.style.display = '';
+          } else {
+            menu.style.display = 'flex';
+            menu.style.flexDirection = 'column';
+            menu.style.padding = '12px 16px';
+          }
+        });
+
+        // collapse menu when a link is clicked (mobile)
+        menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+          if(window.innerWidth < 720){
+            menu.style.display = '';
+            btn.setAttribute('aria-expanded','false');
+          }
+        }));
+      }
+    })();
+
+    // Back to top button
+    (function(){
+      const back = document.getElementById('backtop');
+      const showAfter = 300;
+      const scrollListener = () => {
+        if(window.scrollY > showAfter){
+          back.classList.add('show');
+          back.setAttribute('aria-hidden','false');
+        } else {
+          back.classList.remove('show');
+          back.setAttribute('aria-hidden','true');
+        }
+      };
+      window.addEventListener('scroll', scrollListener, {passive:true});
+      back.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+      // initial check
+      scrollListener();
+    })();
+
+    // Lightbox gallery
+    (function(){
+      const items = Array.from(document.querySelectorAll('.gallery-item'));
+      const lightbox = document.getElementById('lightbox');
+      const imgEl = document.getElementById('lightboxImg');
+      const capEl = document.getElementById('lightboxCaption');
+      const closeBtn = document.getElementById('closeBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      let currentIndex = -1;
+      const openAt = (index) => {
+        if(index < 0 || index >= items.length) return;
+        currentIndex = index;
+        const it = items[index];
+        const src = it.getAttribute('data-src') || it.querySelector('img').src;
+        const caption = it.getAttribute('data-caption') || it.querySelector('.gallery-caption')?.textContent || '';
+        imgEl.src = src;
+        imgEl.alt = caption || ('Parwad image ' + (index+1));
+        capEl.textContent = caption;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden','false');
+        // focus trap-ish: focus close
+        closeBtn.focus();
+      };
+
+      const close = () => {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden','true');
+        imgEl.src = '';
+        currentIndex = -1;
+      };
+
+      items.forEach((it, idx) => {
+        const activate = (e) => { e.preventDefault(); openAt(idx); };
+        it.addEventListener('click', activate);
+        it.addEventListener('keydown', (ev) => {
+          if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openAt(idx); }
+        });
+      });
+
+      closeBtn.addEventListener('click', close);
+      lightbox.addEventListener('click', (e) => {
+        if(e.target === lightbox) close();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if(currentIndex > 0) openAt(currentIndex - 1);
+      });
+      nextBtn.addEventListener('click', () => {
+        if(currentIndex < items.length - 1) openAt(currentIndex + 1);
+      });
+
+      // keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if(lightbox.classList.contains('open')){
+          if(e.key === 'Escape') close();
+          if(e.key === 'ArrowLeft') { if(currentIndex > 0) openAt(currentIndex - 1); }
+          if(e.key === 'ArrowRight') { if(currentIndex < items.length - 1) openAt(currentIndex + 1); }
+        }
+      });
+    })();
+
+    // Optional: smooth scroll offset fix for sticky header on older browsers (if needed)
+    (function(){
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.offsetHeight : 0;
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e){
+          const targetId = this.getAttribute('href').slice(1);
+          const target = document.getElementById(targetId);
+          if(target){
+            e.preventDefault();
+            const top = target.getBoundingClientRect().top + window.scrollY - (headerHeight + 8);
+            window.scrollTo({top, behavior:'smooth'});
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
