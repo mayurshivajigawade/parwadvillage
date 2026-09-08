@@ -1,6 +1,6 @@
 # 🌿 Parwad Village
 
-![Parwad Village](fastival.png)
+![Parwad Village](waterfall.png)
 
 ## 🏡 About Parwad Village
 
